@@ -3,20 +3,31 @@ page-home {
     div#player{
         margin: 10px;
         ion-icon{
-        margin-left: 10px;
-        margin-right: 10px;
-        zoom:2.0;
+            margin-left: 10px;
+            margin-right: 10px;
+            zoom:2.0;
         }
     }
     
     div#playlist{
         ion-card-content{
             text-align: left;
-            align-content: right;
+            align-content: right; //muda nada
+            button{
+                padding-right: 2px; 
+               /* margin-right: 20px;
+                position: relative;*/
+                background-color: red;
+            }
         }
+        
     }
 
     ion-content{
-        text-align: center
-    }
+        text-align: center;
+    } 
+    
+    
 }
+
+   

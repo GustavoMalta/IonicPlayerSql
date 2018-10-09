@@ -1,7 +1,5 @@
 import { Component, NgZone} from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
-//import { FilePath } from '@ionic-native/file-path';
-//import { HomePage } from '../home/home';
 import { ListaProvider, } from '../../providers/lista/lista';
 
 
@@ -21,7 +19,6 @@ export class NavegaPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private platform: Platform,
-              //public filePath: FilePath,
               public ngZone: NgZone,
               public lista: ListaProvider) {
     platform.ready()
@@ -30,10 +27,9 @@ export class NavegaPage {
     })
 
     this.platform.registerBackButtonAction(() => {
-      
        this.goUp();
-      
     });
+
   }
   
   ionViewDidLoad() {
@@ -52,9 +48,8 @@ export class NavegaPage {
         reader.readEntries(
           (entries) => {
               this.ngZone.run(()=> {
-                this.itensFiltrado='';
-                
-              this.itensFiltrado = this.filtro(entries);
+                this.ItensCompelto = entries;
+                this.itensFiltrado = this.filtro(entries);
                 
 
               
@@ -89,13 +84,12 @@ goDown (item){
         this.dirAtual=(reader);
         this.teste = JSON.stringify(this.dirAtual);
         
-        //this.teste = JSON.stringify(temp.createReader());
 
         reader.readEntries(children => {
           this.ngZone.run(() => {
             this.itensFiltrado = this.filtro(children);
            // console.log(JSON.stringify(this.itensFiltrado));
-           // this.teste = JSON.stringify(children);
+            //this.teste = JSON.stringify(this.ItensCompelto);
         });
       }, this.handleError);
     }

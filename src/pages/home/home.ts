@@ -5,7 +5,7 @@ import { LoadingController } from 'ionic-angular';
 import { ListaProvider } from '../../providers/lista/lista';
 /*
 ionic cordova plugin add cordova-plugin-media
-$ npm install --save @ionic-native/media
+npm install --save @ionic-native/media
 */
 
 @Component({
