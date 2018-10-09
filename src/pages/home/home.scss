@@ -1,0 +1,22 @@
+page-home {
+
+    div#player{
+        margin: 10px;
+        ion-icon{
+        margin-left: 10px;
+        margin-right: 10px;
+        zoom:2.0;
+        }
+    }
+    
+    div#playlist{
+        ion-card-content{
+            text-align: left;
+            align-content: right;
+        }
+    }
+
+    ion-content{
+        text-align: center
+    }
+}

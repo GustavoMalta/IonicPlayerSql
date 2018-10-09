@@ -1,0 +1,38 @@
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>browse</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <br>
+  <!--h3>{{teste}}</h3-->
+  <button ion-button (click)="goUp()" color="secondary" block>
+    Go up
+  </button>
+    <!--p>info {{itensFiltrado}}</p><br-->  
+    <p>teste>>{{teste}}</p>
+      <p>dirroot>>{{dirRoot}}</p>
+  <ion-card *ngFor="let item of itensFiltrado">
+    <ion-card-content *ngIf="item.isDirectory" (click)="goDown(item)">
+      <ion-icon name="folder"></ion-icon> {{item.name}}
+    </ion-card-content>
+  <!--/ion-card>
+  <ion-card *ngFor="let item of items"-->
+    <ion-card-content *ngIf="item.isFile" (click)="toPlayer({'nome':item.name,'caminho':item.fullPath}, item.nativeURL)">
+      <ion-icon name="musical-notes"></ion-icon> {{item.name}}
+      <!--<br>Path: {{item.fullPath}} -->
+    </ion-card-content>
+    <ion-card-content *ngIf="item.isVazio">
+      <ion-icon name="musical-notes"></ion-icon> PASTA VAZIA <ion-icon name="musical-notes"></ion-icon>
+    </ion-card-content>
+
+  </ion-card>
+  <!--button ion-button (click)="click()">button</button  (click)="goDown(item)"-->
+
+</ion-content>

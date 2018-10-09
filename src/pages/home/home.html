@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header> 
+
+<ion-content padding>
+  <h3>Ionic Player</h3>
+  <p>{{teste}}</p>
+
+  <button ion-button secondary (click)="limpaLista()">Limpa lista</button><br>
+  <ion-card *ngFor="let m of file">
+  <div id="playlist">
+    <ion-card-content>
+        <ion-icon name="musical-notes" (click)="toca(m.arquivo.caminho)">  {{m.arquivo.nome}}</ion-icon>
+    </ion-card-content>
+  </div>
+
+  </ion-card>
+    <p ></p>
+ 
+  
+</ion-content>
+   <ion-footer>
+      
+      <div align="center" id="player">
+        <ion-icon name= "md-{{pp}}" (click)="toca()"></ion-icon>
+        <ion-icon name= "md-square" (click)="para()"></ion-icon>  
+      </div>
+      
+    </ion-footer>
