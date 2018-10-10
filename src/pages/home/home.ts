@@ -22,7 +22,8 @@ export class HomePage {
   file=[];
   isAudioPlaying:boolean;
   position: number = 0;
-	duration: number;
+  duration: any = -1;
+  interval;
 
   constructor(public navCtrl: NavController,
               private media: Media,
@@ -59,7 +60,16 @@ toca(caminho:string){
       if (this.pp=="play"){
         this.pp="pause";
         console.log("Tocando arquivo");
-        this.arquivo.getDuration();
+        this.interval = setInterval(() => {
+         /* if(this.duration == -1) {*/
+            this.duration = this.arquivo.getDuration();
+            
+         /* } else {
+            this.arquivo.stop();
+            this.arquivo.setVolume(1.0);
+            clearInterval(this.interval);
+          }*/
+       }, 2);
         if (!this.pause){
           this.startLoad("Carregando...");
           this.arquivo.play(); 
@@ -74,7 +84,7 @@ toca(caminho:string){
         this.arquivo.pause();
         this.pause=true;
       }
-    
+      this.controlProgressBar('');
     }
 
 
@@ -90,7 +100,8 @@ toca(caminho:string){
       this.ionViewDidEnter();
     }
 
-    controlProgressBar(event) {
+controlProgressBar(event) {
+      //console.log("ControlprogressBar" +event.toString());
       var self = this;
       if(this.isAudioPlaying == true ) {
           setInterval(function () {
