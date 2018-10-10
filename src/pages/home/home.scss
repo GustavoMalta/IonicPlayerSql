@@ -13,12 +13,14 @@ page-home {
         ion-card-content{
             text-align: left;
             align-content: right; //muda nada
-            button{
-                padding-right: 2px; 
-               /* margin-right: 20px;
-                position: relative;*/
+            width: 100%;
+            
+            float: left;
+            /*button{
+                width: 20%;
+                float: right;            
                 background-color: red;
-            }
+            }*/
         }
         
     }

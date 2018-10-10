@@ -20,6 +20,10 @@ export class HomePage {
   loader: any;
   teste = "";
   file=[];
+  isAudioPlaying:boolean;
+  position: number = 0;
+	duration: number;
+
   constructor(public navCtrl: NavController,
               private media: Media,
               public loadingCtrl: LoadingController,
@@ -49,16 +53,21 @@ toca(caminho:string){
    if (caminho){
       this.para();
       this.arquivo = this.media.create(caminho);
+      this.isAudioPlaying = true;
+      
     }
       if (this.pp=="play"){
         this.pp="pause";
         console.log("Tocando arquivo");
+        this.arquivo.getDuration();
         if (!this.pause){
           this.startLoad("Carregando...");
-          this.arquivo.play();  
+          this.arquivo.play(); 
+          
           this.endLoad();
         }else{
           this.arquivo.play();
+          
         }
       }else{
         this.pp="play";
@@ -79,6 +88,17 @@ toca(caminho:string){
  limpaLista(){
       this.lista.limpa();
       this.ionViewDidEnter();
+    }
+
+    controlProgressBar(event) {
+      var self = this;
+      if(this.isAudioPlaying == true ) {
+          setInterval(function () {
+          self.arquivo.getCurrentPosition().then((position) => {
+            self.position = position;
+          });
+          }, 1000);
+      }		
     }
 
 
