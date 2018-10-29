@@ -16,8 +16,8 @@
     Go up
   </button>
     <!--p>info {{itensFiltrado}}</p><br-->  
-    <p>teste>>{{teste}}</p>
-      <p>dirroot>>{{dirRoot}}</p>
+    <!--p>teste>>{{teste}}</p>
+      <p>dirroot>>{{dirRoot}}</p-->
   <ion-card *ngFor="let item of itensFiltrado">
     <ion-card-content *ngIf="item.isDirectory" (click)="goDown(item)">
       <ion-icon name="folder"></ion-icon> {{item.name}}

@@ -9,10 +9,10 @@
   <!--p>{{teste}}</p-->
 
   <button ion-button secondary (click)="limpaLista()">Limpa lista</button><br>
-  <ion-card *ngFor="let m of file">
+  <ion-card *ngFor="let m of file" (click)="toca(m.arquivo.caminho)" (click)="controlProgressBar($event)">
   <div id="playlist">
     <ion-card-content>
-        <ion-icon name="musical-notes" (click)="toca(m.arquivo.caminho)"> {{m.arquivo.nome}}</ion-icon>
+        <ion-icon name="musical-notes"> {{m.arquivo.nome}}</ion-icon>
     </ion-card-content> 
   </div>
 
@@ -24,10 +24,11 @@
 <ion-footer>
 
   <div align="center" id="player">
-      <ion-range min="0" max="{{duration}}" [(ngModel)]="position" (ionChange)="controlProgressBar($event)"> <!--  [disabled]="is_in_play && is_playing"  -->
-        <ion-label range-left>{{ position*1000 | date:'mm:ss' }}</ion-label>
+      <ion-range min="0" max="{{duration}}" [(ngModel)]="position"> <!--  [disabled]="is_in_play && is_playing"  -->
+        <ion-label range-left *ngIf="position == -0.001" >00:00</ion-label>
+        <ion-label range-left *ngIf="position != -0.001" >{{ position*1000 | date:'mm:ss' }}</ion-label>
         <ion-label range-right *ngIf="duration == -1" >--:--</ion-label>
-        <ion-label range-right *ngIf="duration != -1">{{ duration*1000 | date:'mm:ss' }}</ion-label>
+        <ion-label range-right *ngIf="duration != -1" >{{ duration*1000 | date:'mm:ss' }}</ion-label>
       </ion-range>  
     <!--ion-item>
           <ion-range min="0" max="100" [(ngModel)]="position" color="secondary" (ionChange)="controlProgressBar($event)"></ion-range>

@@ -54,10 +54,10 @@ toca(caminho:string){
    if (caminho){
       this.para();
       this.arquivo = this.media.create(caminho);
-      this.isAudioPlaying = true;
       
     }
       if (this.pp=="play"){
+        this.isAudioPlaying = true;
         this.pp="pause";
         console.log("Tocando arquivo");
         this.interval = setInterval(() => {
@@ -81,10 +81,11 @@ toca(caminho:string){
         }
       }else{
         this.pp="play";
+        this.isAudioPlaying = false;
         this.arquivo.pause();
         this.pause=true;
       }
-      this.controlProgressBar('');
+      //this.controlProgressBar('');
     }
 
 
@@ -107,7 +108,8 @@ controlProgressBar(event) {
           setInterval(function () {
           self.arquivo.getCurrentPosition().then((position) => {
             self.position = position;
-          });
+            console.log(position);
+         });
           }, 1000);
       }		
     }
