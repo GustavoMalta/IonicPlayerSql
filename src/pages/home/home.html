@@ -19,6 +19,15 @@
   </ion-card>
     <p ></p>
  
+
+    
+    <ion-card>
+      <div id="playlist" *ngFor="let s of SQL">
+        <ion-card-content>
+            <ion-icon name="musical-notes"> {{s}}</ion-icon>
+        </ion-card-content> 
+      </div>
+       </ion-card>
 </ion-content>
 
 <ion-footer>

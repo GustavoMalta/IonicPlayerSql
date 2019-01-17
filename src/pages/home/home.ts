@@ -3,6 +3,8 @@ import { NavController,NavParams } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { LoadingController } from 'ionic-angular';
 import { ListaProvider } from '../../providers/lista/lista';
+import { BancoProvider } from '../../providers/banco/banco';
+import { SQLiteObject } from '@ionic-native/sqlite';
 /*
 ionic cordova plugin add cordova-plugin-media
 npm install --save @ionic-native/media
@@ -24,12 +26,14 @@ export class HomePage {
   position: number = 0;
   duration: any = -1;
   interval;
+  SQL;
 
   constructor(public navCtrl: NavController,
               private media: Media,
               public loadingCtrl: LoadingController,
               public navParam: NavParams,
-              public lista: ListaProvider) {
+              public lista: ListaProvider,
+              public banco: BancoProvider) {
   }
   
   ionViewDidEnter() {
@@ -99,7 +103,27 @@ toca(caminho:string){
  limpaLista(){
       this.lista.limpa();
       this.ionViewDidEnter();
-    }
+
+      this.banco.allData()
+      .then((data: any) => {
+        let t=true;
+        let x=0;
+        while (x <  parseInt(data.rows.length)){
+          this.SQL = this.SQL + JSON.stringify(data.rows.item(x).name);
+                  console.log(this.SQL)
+          console.log(JSON.stringify(data.rows.item(x)));
+          x++;
+        }
+    })
+      .catch((e) => console.error('1'+JSON.stringify(e)));
+      
+  }
+
+     
+    
+
+    
+    
 
 controlProgressBar(event) {
       //console.log("ControlprogressBar" +event.toString());
