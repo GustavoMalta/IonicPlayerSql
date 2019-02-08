@@ -38,7 +38,7 @@ export class NavegaPage {
 
   listRootDir = () => {
 
-    const ROOT_DIRECTORY = "file:///sdcard/";
+    const ROOT_DIRECTORY = "file:///";
     
     (<any> window).resolveLocalFileSystemURL(ROOT_DIRECTORY,
       (fileSystem) => {

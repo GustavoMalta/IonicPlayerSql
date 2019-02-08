@@ -4,7 +4,7 @@ import { Media, MediaObject } from '@ionic-native/media';
 import { LoadingController } from 'ionic-angular';
 import { ListaProvider } from '../../providers/lista/lista';
 import { BancoProvider } from '../../providers/banco/banco';
-import { SQLiteObject } from '@ionic-native/sqlite';
+import { ListasProvider } from '../../providers/listas/listas'
 /*
 ionic cordova plugin add cordova-plugin-media
 npm install --save @ionic-native/media
@@ -27,13 +27,15 @@ export class HomePage {
   duration: any = -1;
   interval;
   SQL;
+  test: any[]=[];
 
   constructor(public navCtrl: NavController,
               private media: Media,
               public loadingCtrl: LoadingController,
               public navParam: NavParams,
               public lista: ListaProvider,
-              public banco: BancoProvider) {
+              public banco: BancoProvider,
+              public listas: ListasProvider) {
   }
   
   ionViewDidEnter() {
@@ -58,6 +60,7 @@ toca(caminho:string){
    if (caminho){
       this.para();
       this.arquivo = this.media.create(caminho);
+      console.log(JSON.stringify(this.arquivo))
       
     }
       if (this.pp=="play"){
@@ -104,19 +107,13 @@ toca(caminho:string){
       this.lista.limpa();
       this.ionViewDidEnter();
 
-      this.banco.allData()
-      .then((data: any) => {
-        let t=true;
-        let x=0;
-        while (x <  parseInt(data.rows.length)){
-          this.SQL = this.SQL + JSON.stringify(data.rows.item(x).name);
-                  console.log(this.SQL)
-          console.log(JSON.stringify(data.rows.item(x)));
-          x++;
-        }
-    })
+      // printar toras as categorias 
+      this.listas.categorias()
+      .then((data: any[]) => {
+        this.test = data;
+      console.log (JSON.stringify(this.test));
+      })
       .catch((e) => console.error('1'+JSON.stringify(e)));
-      
   }
 
      

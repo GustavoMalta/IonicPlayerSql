@@ -1,13 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
-/*
-  Generated class for the BancoProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class BancoProvider {
 
@@ -30,13 +24,8 @@ export class BancoProvider {
   public createDatabase() {
     return this.getDB()
       .then((db: SQLiteObject) => {
-        this.allData();
-        // Criando as tabelas
-    //    this.createTables(db);
- 
-        // Inserindo dados padrão
-    //    this.insertDefaultItems(db);
- 
+        this.createTables(db); 
+        this.insertDefaultItems(db);
       })
       .catch(e => console.log(e));
   }
@@ -47,7 +36,7 @@ export class BancoProvider {
    */
   private createTables(db: SQLiteObject) {
     // Criando as tabelas
-    db.sqlBatch([
+    db.sqlBatch([ //inclui em lote
       ['CREATE TABLE IF NOT EXISTS categories (id integer primary key AUTOINCREMENT NOT NULL, name TEXT)'],
       ['CREATE TABLE IF NOT EXISTS products (id integer primary key AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))']
     ])
@@ -60,7 +49,7 @@ export class BancoProvider {
    * @param db
    */
   private insertDefaultItems(db: SQLiteObject) {
-    db.executeSql('select COUNT(id) as qtd from categories',[])
+    db.executeSql('select COUNT(id) as qtd from categories',[]) //para nao executar todas as vezes
     .then((data: any) => {
       //Se não existe nenhum registro
       if (data.rows.item(0).qtd == 0) {
@@ -79,20 +68,5 @@ export class BancoProvider {
     .catch(e => console.error('Erro ao consultar a qtd de categorias', e));
   }
 
-  public allData() {
-    return this.getDB()
-      .then((db: SQLiteObject) => {
-        let sql = 'SELECT * FROM categories';
-        let data = [1];
-
-        return db.executeSql(sql,[])
-          .then((data: any) => {
-              console.log(sql);
-            return data;
-          })
-          .catch((e) => console.error('1'+JSON.stringify(e)));
-      })
-      .catch((e) => console.error('2'+e));
-  }
 
 }

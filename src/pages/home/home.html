@@ -9,7 +9,7 @@
   <!--p>{{teste}}</p-->
 
   <button ion-button secondary (click)="limpaLista()">Limpa lista</button><br>
-  <ion-card *ngFor="let m of file" (click)="toca(m.arquivo.caminho)" (click)="controlProgressBar($event)">
+  <ion-card *ngFor="let m of file" (click)="toca(m.key)" (click)="controlProgressBar($event)">
   <div id="playlist">
     <ion-card-content>
         <ion-icon name="musical-notes"> {{m.arquivo.nome}}</ion-icon>

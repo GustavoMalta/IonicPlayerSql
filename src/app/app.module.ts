@@ -15,6 +15,7 @@ import { BancoProvider } from '../providers/banco/banco';
 import { Media } from '@ionic-native/media';
 import { IonicStorageModule } from '@ionic/storage';
 import { SQLite } from '@ionic-native/sqlite';
+import { ListasProvider } from '../providers/listas/listas';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { SQLite } from '@ionic-native/sqlite';
     BancoProvider,
     Media,
     Storage,
-    SQLite
+    SQLite,
+    ListasProvider
     
   ]
 })

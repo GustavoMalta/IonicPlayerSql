@@ -3,7 +3,7 @@
     <name>IonicPlayer</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.1.120:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -87,5 +87,6 @@
     <allow-navigation href="http://192.168.1.101:8100" sessionid="96a22c87" />
     <plugin name="cordova-sqlite-storage" spec="2.6.0" />
     <allow-navigation href="http://192.168.1.120:8100" sessionid="5561158b" />
-    <engine name="android" spec="^7.0.0" />
+    <allow-navigation href="http://192.168.1.2:8100" sessionid="7630281e" />
+    <engine name="android" spec="7.0.0" />
 </widget>
