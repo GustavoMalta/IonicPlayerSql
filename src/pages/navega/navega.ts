@@ -1,7 +1,6 @@
 import { Component, NgZone} from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
-import { ListaProvider, } from '../../providers/lista/lista';
-
+import { ArquivosProvider } from '../../providers/arquivos/arquivos';
 
 @IonicPage()
 @Component({
@@ -11,7 +10,7 @@ import { ListaProvider, } from '../../providers/lista/lista';
 export class NavegaPage {
   itensFiltrado;
   savedParentNativeURLs = [];
-  ItensCompelto;
+  itensCompleto;
   teste;
   dirAtual;
   dirRoot;
@@ -20,7 +19,7 @@ export class NavegaPage {
               public navParams: NavParams,
               private platform: Platform,
               public ngZone: NgZone,
-              public lista: ListaProvider) {
+              public arquivos: ArquivosProvider) {
     platform.ready()
     .then(() => {
       this.listRootDir();
@@ -33,12 +32,12 @@ export class NavegaPage {
   }
   
   ionViewDidLoad() {
-    
+
   }
 
   listRootDir = () => {
 
-    const ROOT_DIRECTORY = "file:///";
+    const ROOT_DIRECTORY = "file:///storage/emulated/0/Music/";
     
     (<any> window).resolveLocalFileSystemURL(ROOT_DIRECTORY,
       (fileSystem) => {
@@ -48,12 +47,12 @@ export class NavegaPage {
         reader.readEntries(
           (entries) => {
               this.ngZone.run(()=> {
-                this.ItensCompelto = entries;
+                this.itensCompleto = entries;
                 this.itensFiltrado = this.filtro(entries);
                 
 
               
-              this.teste = JSON.stringify(this.ItensCompelto); 
+              this.teste = JSON.stringify(this.itensCompleto); 
             });
           }, this.handleError);
       }, this.handleError);
@@ -66,19 +65,19 @@ export class NavegaPage {
   };
 
 toPlayer(arquivo, key){
-    this.lista.insert(arquivo,key);
+    this.arquivos.insert(arquivo)
     //this.navCtrl.setRoot(HomePage, caminho);
   }
 
 goDown (item){
-    let childName = this.ItensCompelto[0].name;
-    let childNativeURL = this.ItensCompelto[0].nativeURL;
+    let childName = this.itensCompleto[0].name;
+    let childNativeURL = this.itensCompleto[0].nativeURL;
 
     const parentNativeURL = childNativeURL.replace(childName, "");
 
     this.savedParentNativeURLs.push(parentNativeURL);
 
-    this.ItensCompelto.forEach(temp => { 
+    this.itensCompleto.forEach(temp => { 
       if((temp.nativeURL.indexOf(item.nativeURL)>=0)){
         var reader = temp.createReader();
         this.dirAtual=(reader);
@@ -89,7 +88,7 @@ goDown (item){
           this.ngZone.run(() => {
             this.itensFiltrado = this.filtro(children);
            // console.log(JSON.stringify(this.itensFiltrado));
-            //this.teste = JSON.stringify(this.ItensCompelto);
+            //this.teste = JSON.stringify(this.itensCompleto);
         });
       }, this.handleError);
     }
@@ -126,7 +125,7 @@ goUp(){
 filtro(pasta){
   let x=true;
   let filtrado;
-  this.ItensCompelto = pasta;
+  this.itensCompleto = pasta;
   //console.log('antes'+JSON.stringify(pasta));
   //if(completo.hasReadEntries)
   pasta.forEach(element => { //se é um diretorio

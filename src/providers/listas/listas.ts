@@ -9,17 +9,7 @@ export class ListasProvider {
     console.log('Hello ListasProvider Provider');
   }
 
-  public insert(product: Product) {
-    return this.banco.getDB()
-      .then((db: SQLiteObject) => {
-        let sql = 'insert into products (name, price, duedate, active, category_id) values (?, ?, ?, ?, ?)';
-        let data = [product.name, product.price, product.duedate, product.active ? 1 : 0, product.category_id];
  
-        return db.executeSql(sql, data)
-          .catch((e) => console.error(e));
-      })
-      .catch((e) => console.error(e));
-  }
  
   public update(product: Product) {
     return this.banco.getDB()
@@ -43,7 +33,34 @@ export class ListasProvider {
           .catch((e) => console.error(e));
       })
       .catch((e) => console.error(e));
+  }
+
+  public clearPlaylist(id: number) {
+    let sql = 'delete from arquivo where id_arquivo = ?';
+    let data = [id];
+    return this.banco.getDB()
+      .then((db: SQLiteObject) => {
+        if(id==0){
+        sql = 'delete from arquivo';
+        data = null
+        this.resetSequence();
+        }
+        return db.executeSql(sql, data)
+          .catch((e) => console.error(e));
+      })
+      .catch((e) => console.error(e));
   } 
+
+  private resetSequence(){
+    return this.banco.getDB()
+      .then((db: SQLiteObject) => {
+        let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "arquivo"';
+        let data = null
+      return db.executeSql(sql, data)
+        .catch((e) => console.error(e));
+    })
+      .catch((e) => console.error(e));
+  }
  
   public get(id: number) {
     return this.banco.getDB()
@@ -102,31 +119,7 @@ export class ListasProvider {
       .catch((e) => console.error(e));
   }
 
-public categorias() {
-    return this.banco.getDB()
-      .then((db: SQLiteObject) => {
-        let sql = 'SELECT * FROM categories';
-        //let data = [];
 
-        return db.executeSql(sql,[])
-          .then((data: any) => {
-              console.log(sql);
-
-              if (data.rows.length > 0) {
-                let categorias: any[] = [];
-                for (var i = 0; i < data.rows.length; i++) {
-                  var categoria = data.rows.item(i);
-                  categorias.push(categoria);
-                }
-                return categorias;
-              } else {
-                return [];
-              }
-            })
-            .catch((e) => console.error(e));
-      })
-      .catch((e) => console.error('2'+e));
-  }
   
 }
 
@@ -139,7 +132,6 @@ export class Product {
   active: boolean;
   category_id: number;
 }
-
 
   
   

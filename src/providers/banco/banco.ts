@@ -38,7 +38,10 @@ export class BancoProvider {
     // Criando as tabelas
     db.sqlBatch([ //inclui em lote
       ['CREATE TABLE IF NOT EXISTS categories (id integer primary key AUTOINCREMENT NOT NULL, name TEXT)'],
-      ['CREATE TABLE IF NOT EXISTS products (id integer primary key AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))']
+      ['CREATE TABLE IF NOT EXISTS products (id integer primary key AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))'],
+      
+      ['CREATE TABLE IF NOT EXISTS arquivo (id_arquivo integer primary key AUTOINCREMENT NOT NULL, nome_arquivo TEXT, caminho_arquivo TEXT)'],
+      ['CREATE TABLE IF NOT EXISTS listas (id_lista integer primary key AUTOINCREMENT NOT NULL, nome_lista TEXT)']
     ])
       .then(() => console.log('Tabelas criadas'))
       .catch(e => console.error('Erro ao criar as tabelas', e));
@@ -59,6 +62,7 @@ export class BancoProvider {
           ['insert into categories (name) values (?)', ['Hambúrgueres']],
           ['insert into categories (name) values (?)', ['Bebidas']],
           ['insert into categories (name) values (?)', ['Sobremesas']]
+          
         ])
           .then(() => console.log('Dados padrões incluídos'))
           .catch(e => console.error('Erro ao incluir dados padrões', e));
