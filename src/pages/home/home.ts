@@ -114,8 +114,10 @@ export class HomePage {
       //this.lista.limpa();
       this.para()
       this.arquivo = null //this.media.create(this.navParam.data);
+      this.duration = -1
       this.listas.clearPlaylist(0);
       this.ionViewDidEnter();
+      this.position = -0.001
 
   }
 
@@ -147,7 +149,7 @@ export class HomePage {
       })
       .catch((e) => console.error("Arquivo Vazio"+e));
       }else{
-        self.position=-1;
+        self.position = -0.001;
       }
       
 
