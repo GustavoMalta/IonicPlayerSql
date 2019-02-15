@@ -29,10 +29,9 @@ export class ArquivosProvider {
 
         return db.executeSql(sql,[])
           .then((data: any) => {
-              console.log('123'+sql);
+              console.log('123 '+sql);
               
               if (data.rows.length > 0) {
-                
                 let categorias: any[] = [];
                 for (var i = 0; i < data.rows.length; i++) {
                   var categoria = data.rows.item(i);
@@ -44,7 +43,7 @@ export class ArquivosProvider {
                 return [];
               }
             })
-            .catch((e) => console.error(e));
+            .catch((e) => console.error('Aqui' + e));
       })
       .catch((e) => console.error('2'+e));
   }

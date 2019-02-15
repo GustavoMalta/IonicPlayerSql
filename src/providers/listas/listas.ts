@@ -45,8 +45,9 @@ export class ListasProvider {
         data = null
         this.resetSequence();
         }
-        return db.executeSql(sql, data)
-          .catch((e) => console.error(e));
+        console.log(sql)
+    return db.executeSql(sql, data)
+      .catch((e) => console.error(e));
       })
       .catch((e) => console.error(e));
   } 
@@ -56,7 +57,7 @@ export class ListasProvider {
       .then((db: SQLiteObject) => {
         let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "arquivo"';
         let data = null
-      return db.executeSql(sql, data)
+      return db.executeSql(sql, data) 
         .catch((e) => console.error(e));
     })
       .catch((e) => console.error(e));

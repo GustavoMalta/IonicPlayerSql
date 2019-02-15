@@ -24,7 +24,7 @@
     </ion-card-content>
   <!--/ion-card>
   <ion-card *ngFor="let item of items"-->
-    <ion-card-content *ngIf="item.isFile" (click)="toPlayer({'nome':item.name,'caminho':item.fullPath}, item.nativeURL)">
+    <ion-card-content *ngIf="item.isFile" (click)="toPlayer({'nome':item.name,'caminho':item.fullPath})">
       <ion-icon name="musical-notes"></ion-icon> {{item.name}}
       <!--<br>Path: {{item.fullPath}} -->
     </ion-card-content>

@@ -15,17 +15,16 @@ npm install --save @ionic-native/media
 })
 export class HomePage {
 
-  arquivo: MediaObject = null//this.media.create('https://www.sample-videos.com/audio/mp3/crowd-cheering.mp3');///storage/emulated/0/Download/lobo.mp3');
+  arquivo: MediaObject = null //this.media.create('https://www.sample-videos.com/audio/mp3/crowd-cheering.mp3');///storage/emulated/0/Download/lobo.mp3');
   pause = false;
   pp="play";
   loader: any;
   teste = "";
   file=[];
-  isAudioPlaying:boolean;
+  isAudioPlaying:boolean = false;
   position: number = 0;
   duration: any = -1;
   interval;
-  SQL;
   test: any[]=[];
   get_position_interval: number;
 
@@ -39,84 +38,100 @@ export class HomePage {
   
   ionViewDidEnter() {
       if (this.pp=="play"){ //foi o jeito que consegui ver se estava vazio
-        this.para()
+        //this.para()
       }
         
       
-      this.arquivos.getAll()
+        this.arquivos.getAll()
             .then((result: any) => {
               this.file = result;
-              this.teste= JSON.stringify('1'+result);
-            });
+              this.teste= JSON.stringify(result);
+            })
+            .catch((e) => console.error("Lista Vazia"+e));
       console.log (JSON.stringify(this.teste));
+      
   }
 
-toca(caminho:string){
-   if (caminho){
+  toca(caminho:string){
+    if (caminho){
       this.para();
       this.arquivo = this.media.create(caminho);
       console.log(JSON.stringify(this.arquivo))
-      
+      this.startLoad("Carregando...");
+      this.interval = setInterval(() => {
+        if(this.arquivo != null) {
+            this.duration = this.arquivo.getDuration();  
+          }
+        }, 2);
+      this.ionViewDidEnter();
+      this.endLoad();
+
     }
-      if (this.pp=="play"){
-        this.isAudioPlaying = true;
+
+    if (this.arquivo != null) {
+      if (!this.isAudioPlaying){
         this.pp="pause";
         console.log("Tocando arquivo");
-        this.interval = setInterval(() => {
-        if(this.arquivo != null) {
-            this.duration = this.arquivo.getDuration();
-            
-        } /*else {
-            this.arquivo.stop();
-            this.arquivo.setVolume(1.0);
-            clearInterval(this.interval);
-          }*/
-       }, 2);
-        if (!this.pause){
-          this.startLoad("Carregando...");
-          this.arquivo.play(); 
-          
-          this.endLoad();
+        this.arquivo.play();
+        this.isAudioPlaying = true;
         }else{
-          this.arquivo.play();
-          
-        }
-      }else{
         this.pp="play";
-        this.isAudioPlaying = false;
         this.arquivo.pause();
-        this.pause=true;
+       // this.pause=true;
+        this.isAudioPlaying = false;
+        }
+
+        this.getAndSetCurrentAudioPosition();
       }
-      //this.controlProgressBar('');
-      this.getAndSetCurrentAudioPosition();
-    }
+
+     /* if (!this.pause){
+        this.startLoad("Carregando...");
+        this.arquivo.play(); 
+        this.endLoad();
+
+      }else{
+        
+      }*/
+    //this.controlProgressBar('');
+    //this.getAndSetCurrentAudioPosition();
+   // }
+  }
 
 
  para(){
    if (this.arquivo != null){
       this.arquivo.stop();
+      this.position = 0;
       console.log("parando arquivo"); 
-      this.pause = false;  
+      //this.pause = false;  
       this.pp="play";
-   }
+      this.isAudioPlaying = false;
+      }
+
   }
 
  limpaLista(){
-      //this.lista.limpa(); 
-      this.listas.clearPlaylist(0);
+      //this.lista.limpa();
+      this.para()
       this.arquivo = null //this.media.create(this.navParam.data);
+      this.listas.clearPlaylist(0);
       this.ionViewDidEnter();
-    
 
   }
 
      
-  private getAndSetCurrentAudioPosition() {
+  getAndSetCurrentAudioPosition() {
     let diff = 1;
     let self = this;
-    this.get_position_interval = setInterval(function() {
+    
+    this.get_position_interval = setInterval(function(){ //essa func fica rodadn o tempo todo. Deal With It
       let last_position = self.position;
-      self.arquivo.getCurrentPosition().then((position) => {
+    //  if (this.position > 0){
+      if (self.arquivo != null){
+ //     console.log(self.position)
+        self.arquivo.getCurrentPosition()
+      .then((position) => {
+    //    console.log(position)
         if (position >= 0 && position < self.duration) {
           if(Math.abs(last_position - position) >= diff) {
             // set position
@@ -126,10 +141,19 @@ toca(caminho:string){
             self.position = position;
           }
         } else if (position >= self.duration) {
-          self.para();
+          //self.para();
         }
-      });
-    }, 100);
+        
+      })
+      .catch((e) => console.error("Arquivo Vazio"+e));
+      }else{
+        self.position=-1;
+      }
+      
+
+    //}
+    }, 100)
+    
 }
 
 

@@ -64,7 +64,7 @@ export class NavegaPage {
 
   };
 
-toPlayer(arquivo, key){
+toPlayer(arquivo){
     this.arquivos.insert(arquivo)
     //this.navCtrl.setRoot(HomePage, caminho);
   }
