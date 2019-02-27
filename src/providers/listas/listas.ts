@@ -90,34 +90,30 @@ export class ListasProvider {
       .catch((e) => console.error(e));
   }
  
-  public getAll(active: boolean, name: string = null) {
+  public getAll() {
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'SELECT p.*, c.name as category_name FROM products p inner join categories c on p.category_id = c.id where p.active = ?';
-        var data: any[] = [active ? 1 : 0];
- 
-        // filtrando pelo nome
-        if (name) {
-          sql += ' and p.name like ?'
-          data.push('%' + name + '%'); //inclrementa o data com o nome caso tenha
-        }
+        let sql = 'SELECT * from categories';
+        var data: [];
+        console.log(sql);
  
         return db.executeSql(sql, data)
           .then((data: any) => {
             if (data.rows.length > 0) {
-              let products: any[] = [];
+              let categorias: any[] = [];
               for (var i = 0; i < data.rows.length; i++) {
-                var product = data.rows.item(i);
-                products.push(product);
+                var categoria = data.rows.item(i);
+                categorias.push(categoria);
               }
-              return products;
+              console.log(categorias)
+              return categorias;
             } else {
               return [];
             }
           })
           .catch((e) => console.error(e));
       })
-      .catch((e) => console.error(e));
+      .catch((e) => console.error('teste '+ e));
   }
 
 

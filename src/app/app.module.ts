@@ -6,6 +6,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { NavegaPageModule } from '../pages/navega/navega.module';
+import { PlaylistsPageModule } from '../pages/playlists/playlists.module';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,6 +28,7 @@ import { ArquivosProvider } from '../providers/arquivos/arquivos';
     BrowserModule,
     IonicModule.forRoot(MyApp),
     NavegaPageModule,
+    PlaylistsPageModule,
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
