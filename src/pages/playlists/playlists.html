@@ -9,15 +9,33 @@
   <ion-navbar>
     <ion-title>playlists</ion-title>
   </ion-navbar>
-
+ 
 </ion-header>
 
 
 <ion-content padding>
+    <button ion-button secondary (click)="limpaLista()">Limpa listas</button><br>
+
         <ion-list>
-            <button ion-item *ngFor="let p of lista">
-              {{p.name}}
+          <ion-item>
+            <button ion-item *ngFor="let l of lista" (click)="toPlayer(l.id_lista, l.nome_lista)">
+              {{l.nome_lista}}  {{l.id_lista}}
+            <button ion-button item-right (click)="adicionar(l.id_lista)">Add</button>
+            <button ion-button item-right (click)="apagar(l.id_lista)">Del</button>
             </button>
+          </ion-item>
+            
         </ion-list>
 
 </ion-content>
+
+<ion-footer>
+
+  <div align="center" id="footer" margin>
+    <ion-item>
+      <ion-input  placeholder="Nome da Playlist" maxlength="10" [(ngModel)]="nome"></ion-input>
+      <button ion-button item-right (click)="criar()" >Criar</button>
+    </ion-item>
+  </div>
+  
+</ion-footer>

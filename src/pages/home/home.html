@@ -1,8 +1,5 @@
 <ion-header>
     <ion-navbar>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
       <ion-title>Home</ion-title>
     </ion-navbar>
   </ion-header> 
@@ -12,7 +9,7 @@
   <h3>Ionic Player</h3>
   <!--p>{{teste}}</p-->
 
-  <button ion-button secondary (click)="limpaLista()">Limpa lista</button><br>
+  <button ion-button secondary (click)="limpaLista()">Limpa lista <br>{{nome_lista_atual}}</button><br>
   <ion-card *ngFor="let m of file" (click)="toca(m.caminho_arquivo)"><!--> (click)="controlProgressBar(0)"-->
   <div id="playlist">
     <ion-card-content>

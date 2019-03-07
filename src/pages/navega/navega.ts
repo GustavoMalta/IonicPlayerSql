@@ -1,5 +1,5 @@
 import { Component, NgZone} from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import { ArquivosProvider } from '../../providers/arquivos/arquivos';
 
 @IonicPage()
@@ -19,20 +19,28 @@ export class NavegaPage {
               public navParams: NavParams,
               private platform: Platform,
               public ngZone: NgZone,
-              public arquivos: ArquivosProvider) {
+              public arquivos: ArquivosProvider,
+              public navParam: NavParams,
+              private viewCtrl: ViewController) {
     platform.ready()
     .then(() => {
       this.listRootDir();
     })
 
     this.platform.registerBackButtonAction(() => {
+      //colcoar um if para qunado tiver na raiz
        this.goUp();
     });
 
   }
   
+  modalDismiss(){
+    this.viewCtrl.dismiss();
+  }
+
   ionViewDidLoad() {
 
+    console.log ("navparam "+ JSON.stringify(this.navParam.data.id_lista))
   }
 
   listRootDir = () => {
@@ -65,7 +73,7 @@ export class NavegaPage {
   };
 
 toPlayer(arquivo){
-    this.arquivos.insert(arquivo)
+    this.arquivos.insert(arquivo, this.navParam.get("id_lista"))
     //this.navCtrl.setRoot(HomePage, caminho);
   }
 

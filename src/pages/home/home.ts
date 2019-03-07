@@ -27,6 +27,9 @@ export class HomePage {
   interval;
   test: any[]=[];
   get_position_interval: number;
+  id_lista_atual: number;
+  nome_lista_atual: string;
+
 
   constructor(public navCtrl: NavController,
               private media: Media,
@@ -40,14 +43,29 @@ export class HomePage {
       if (this.pp=="play"){ //foi o jeito que consegui ver se estava vazio
         //this.para()
       }
+      console.log ("Lista atual " + this.listas.id_lista_atual)
+      this.id_lista_atual = this.listas.id_lista_atual
+      this.nome_lista_atual = this.listas.nome_lista_atual
+      console.log("Lista atual " + this.id_lista_atual)
+
+          if (this.id_lista_atual > 0){
+          this.arquivos.get(this.id_lista_atual)
+          .then((result: any) => {
+            this.file = result;
+            this.teste= JSON.stringify(result);
+          })
+          .catch((e) => console.error("Lista Vazia"+e));
+        }
+      
+      
         
       
-        this.arquivos.getAll()
+      /*  this.arquivos.getAll()
             .then((result: any) => {
               this.file = result;
               this.teste= JSON.stringify(result);
             })
-            .catch((e) => console.error("Lista Vazia"+e));
+            .catch((e) => console.error("Lista Vazia"+e));*/
       console.log (JSON.stringify(this.teste));
       
   }
@@ -111,11 +129,11 @@ export class HomePage {
   }
 
  limpaLista(){
-      //this.lista.limpa();
+      this.arquivos.clearPlaylist(this.id_lista_atual);
       this.para()
       this.arquivo = null //this.media.create(this.navParam.data);
       this.duration = -1
-      this.listas.clearPlaylist(0);
+      //this.listas.clearPlaylist(0);
       this.ionViewDidEnter();
       this.position = -0.001
 
@@ -194,4 +212,10 @@ controlProgressBar(event) {
 
       }		
 */
+}
+
+
+export class Lista {
+  id_lista: number =null;
+  nome_lista: string = null;
 }

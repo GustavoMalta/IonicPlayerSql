@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from '@ionic-native/sqlite';
 import { BancoProvider } from '../banco/banco';
+import { isTrueProperty } from 'ionic-angular/umd/util/util';
 
 @Injectable()
 export class ListasProvider {
@@ -9,14 +10,42 @@ export class ListasProvider {
     console.log('Hello ListasProvider Provider');
   }
 
- 
- 
-  public update(product: Product) {
+ public id_lista_atual : number
+ public nome_lista_atual : string
+
+  public insert(nome: string) {
+
+    return this.banco.getDB()
+    .then((db: SQLiteObject) => {
+      let sql = 'SELECT * from listas where nome_lista = ? ';
+      let data = [nome];
+
+      return db.executeSql(sql, data)
+          .then((data: any) => {
+            console.log("numero de rows" + JSON.stringify(data.rows));
+            if (data.rows.length == 0) {
+              this.insere(nome)
+              .then(() => {
+              })
+              .catch((e) => console.error(e));
+              console.log ("Inserido!!!!")
+              return true;
+            }else{
+              console.log ("ja exixte playlist com esse nome!!!!")
+              return false;
+            }
+          })
+          .catch((e) => console.error(JSON.stringify(e)));
+      })
+    .catch((e) => console.error(JSON.stringify(e)));
+
+  }
+
+  public update(lista: Lista) {
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'update products set name = ?, price = ?, duedate = ?, active = ?, category_id = ? where id = ?';
-        let data = [product.name, product.price, product.duedate, product.active ? 1 : 0, product.category_id, product.id];
- 
+        let sql = 'update listas set nome_lista = ?';
+        let data = [lista.nome_lista];
         return db.executeSql(sql, data)
           .catch((e) => console.error(e));
       })
@@ -26,7 +55,7 @@ export class ListasProvider {
   public remove(id: number) {
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'delete from products where id = ?';
+        let sql = 'delete from listas where id_lista = ?';
         let data = [id];
  
         return db.executeSql(sql, data)
@@ -36,12 +65,12 @@ export class ListasProvider {
   }
 
   public clearPlaylist(id: number) {
-    let sql = 'delete from arquivo where id_arquivo = ?';
+    let sql = 'delete from listas where id_lista = ?';
     let data = [id];
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
         if(id==0){
-        sql = 'delete from arquivo';
+        sql = 'delete from listas';
         data = null
         this.resetSequence();
         }
@@ -55,33 +84,41 @@ export class ListasProvider {
   private resetSequence(){
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "arquivo"';
+        let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "listas"';
         let data = null
       return db.executeSql(sql, data) 
         .catch((e) => console.error(e));
     })
       .catch((e) => console.error(e));
   }
- 
+  
+  public insere(nome: string){
+
+      return this.banco.getDB()
+        .then((db: SQLiteObject) => {
+          let sql = 'insert into listas (nome_lista) values (?)';
+          let data = [nome];
+          return db.executeSql(sql, data)
+            .catch((e) => console.error('1'+JSON.stringify(e)));
+        })
+        .catch((e) => console.error('2'+e));
+  }
+
   public get(id: number) {
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'select * from products where id = ?';
+        let sql = 'select * from listas where id_lista = ?';
         let data = [id];
  
         return db.executeSql(sql, data)
           .then((data: any) => {
             if (data.rows.length > 0) {
               let item = data.rows.item(0);
-              let product = new Product();
-              product.id = item.id;
-              product.name = item.name;
-              product.price = item.price;
-              product.duedate = item.duedate;
-              product.active = item.active;
-              product.category_id = item.category_id;
+              let lista = new Lista();
+              lista.id_lista = item.id_lista;
+              lista.nome_lista = item.nome_lista;
  
-              return product;
+              return lista;
             }
              return null;
           })
@@ -93,27 +130,25 @@ export class ListasProvider {
   public getAll() {
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'SELECT * from categories';
-        var data: [];
-        console.log(sql);
+        let sql = 'SELECT * from listas';
  
-        return db.executeSql(sql, data)
+        return db.executeSql(sql, [])
           .then((data: any) => {
+            console.log(sql);
             if (data.rows.length > 0) {
-              let categorias: any[] = [];
+              let listas: any[] = [];
               for (var i = 0; i < data.rows.length; i++) {
-                var categoria = data.rows.item(i);
-                categorias.push(categoria);
+                var lista = data.rows.item(i);
+                listas.push(lista);
               }
-              console.log(categorias)
-              return categorias;
+              return listas;
             } else {
-              return [];
+              return null;
             }
           })
           .catch((e) => console.error(e));
       })
-      .catch((e) => console.error('teste '+ e));
+      .catch((e) => console.error(e));
   }
 
 
@@ -121,13 +156,9 @@ export class ListasProvider {
 }
 
 
-export class Product {
-  id: number;
-  name: string;
-  price: number;
-  duedate: Date;
-  active: boolean;
-  category_id: number;
+export class Lista {
+  id_lista: number;
+  nome_lista: string;
 }
 
   

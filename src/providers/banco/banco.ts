@@ -13,7 +13,7 @@ export class BancoProvider {
    */
   public getDB() {
     return this.sqlite.create({
-      name: 'products.db',
+      name: 'database.db',
       location: 'default'
     });
   }
@@ -25,7 +25,7 @@ export class BancoProvider {
     return this.getDB()
       .then((db: SQLiteObject) => {
         this.createTables(db); 
-        this.insertDefaultItems(db);
+  //      this.insertDefaultItems(db);
       })
       .catch(e => console.log(e));
   }
@@ -37,20 +37,18 @@ export class BancoProvider {
   private createTables(db: SQLiteObject) {
     // Criando as tabelas
     db.sqlBatch([ //inclui em lote
-      ['CREATE TABLE IF NOT EXISTS categories (id integer primary key AUTOINCREMENT NOT NULL, name TEXT)'],
-      ['CREATE TABLE IF NOT EXISTS products (id integer primary key AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))'],
-      
-      ['CREATE TABLE IF NOT EXISTS arquivo (id_arquivo integer primary key AUTOINCREMENT NOT NULL, nome_arquivo TEXT, caminho_arquivo TEXT)'],
-      ['CREATE TABLE IF NOT EXISTS listas (id_lista integer primary key AUTOINCREMENT NOT NULL, nome_lista TEXT)']
+      ['CREATE TABLE IF NOT EXISTS listas (id_lista integer primary key AUTOINCREMENT NOT NULL, nome_lista TEXT)'],
+      ['CREATE TABLE IF NOT EXISTS arquivos (id_arquivo integer primary key AUTOINCREMENT NOT NULL, nome_arquivo TEXT, caminho_arquivo TEXT, id_lista integer, FOREIGN KEY(id_lista) REFERENCES listas(id_lista))']
     ])
       .then(() => console.log('Tabelas criadas'))
-      .catch(e => console.error('Erro ao criar as tabelas', e));
+      .catch(e => console.error('Erro ao criar as tabelas', JSON.stringify(e)));
   }
  
+  
   /**
    * Incluindo os dados padrões
-   * @param db
-   */
+    @param db
+   
   private insertDefaultItems(db: SQLiteObject) {
     db.executeSql('select COUNT(id) as qtd from categories',[]) //para nao executar todas as vezes
     .then((data: any) => {
@@ -71,6 +69,6 @@ export class BancoProvider {
     })
     .catch(e => console.error('Erro ao consultar a qtd de categorias', e));
   }
-
+*/
 
 }
