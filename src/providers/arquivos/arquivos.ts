@@ -104,13 +104,16 @@ public clearPlaylist(id: number) {
       if(id==0){
       sql = 'delete from arquivos';
       data = null
+      
       }
-      console.log(sql)
+      console.log(sql + data)
   return db.executeSql(sql, data)
     .catch((e) => console.error(e));
     })
     .catch((e) => console.error(e));
 } 
+
+
 
 }
 

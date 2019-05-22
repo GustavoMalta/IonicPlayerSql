@@ -4,13 +4,6 @@ import { ListasProvider } from '../../providers/listas/listas'
 import { ArquivosProvider } from '../../providers/arquivos/arquivos';
 import { NavegaPage } from '../navega/navega';
  
-/**
- * Generated class for the PlaylistsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-playlists',
@@ -21,7 +14,6 @@ export class PlaylistsPage {
   lista =[];
   vazio:boolean;
   teste = "";
-
   nome:string;
 
   constructor(public navCtrl: NavController, 
@@ -50,6 +42,7 @@ export class PlaylistsPage {
    this.playlist.insert(this.nome)
    .then(() => {
     this.ionViewDidEnter(); 
+    this.nome ="";
    })
    .catch((e) => console.error("Lista Vazia"+e));   
  
@@ -64,7 +57,8 @@ export class PlaylistsPage {
    
   }
 
-  apagar(id){    
+  apagar(id){ 
+    
     this.playlist.clearPlaylist(id)
     .then(() => {
       console.log("Lista Apagada!")
@@ -80,10 +74,8 @@ export class PlaylistsPage {
   }
 
   toPlayer(id, nome){
-    //this.playlist.get(id);
     this.playlist.id_lista_atual = id
     this.playlist.nome_lista_atual = nome
-    //this.vei.willLeave()
 }
 
   adicionar(id: number){

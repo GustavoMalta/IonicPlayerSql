@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from '@ionic-native/sqlite';
 import { BancoProvider } from '../banco/banco';
-import { isTrueProperty } from 'ionic-angular/umd/util/util';
+import { ArquivosProvider } from '../arquivos/arquivos'
 
 @Injectable()
 export class ListasProvider {
 
-  constructor(private banco: BancoProvider) {
+  constructor(private banco: BancoProvider, private arquivos:ArquivosProvider) {
     console.log('Hello ListasProvider Provider');
   }
 
@@ -67,8 +67,13 @@ export class ListasProvider {
   public clearPlaylist(id: number) {
     let sql = 'delete from listas where id_lista = ?';
     let data = [id];
+    this.arquivos.clearPlaylist(id)
+    this.nome_lista_atual='';
+    this.id_lista_atual=0;
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
+        this.nome_lista_atual='';
+        this.id_lista_atual=0;
         if(id==0){
         sql = 'delete from listas';
         data = null
@@ -84,7 +89,7 @@ export class ListasProvider {
   private resetSequence(){
     return this.banco.getDB()
       .then((db: SQLiteObject) => {
-        let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "listas"';
+        let sql = 'UPDATE SQLITE_SEQUENCE SET seq=0 WHERE name = "listas" or name = "arquivos"';
         let data = null
       return db.executeSql(sql, data) 
         .catch((e) => console.error(e));

@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams } from 'ionic-angular';
+import { NavController,NavParams, IonicPageModule, IonicPage } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { LoadingController } from 'ionic-angular';
 import { ListasProvider } from '../../providers/listas/listas'
 import { ArquivosProvider } from '../../providers/arquivos/arquivos';
-/*
-ionic cordova plugin add cordova-plugin-media
-npm install --save @ionic-native/media
-*/
 
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -43,7 +40,6 @@ export class HomePage {
       if (this.pp=="play"){ //foi o jeito que consegui ver se estava vazio
         //this.para()
       }
-      console.log ("Lista atual " + this.listas.id_lista_atual)
       this.id_lista_atual = this.listas.id_lista_atual
       this.nome_lista_atual = this.listas.nome_lista_atual
       console.log("Lista atual " + this.id_lista_atual)
@@ -55,17 +51,12 @@ export class HomePage {
             this.teste= JSON.stringify(result);
           })
           .catch((e) => console.error("Lista Vazia"+e));
+        }else {
+        this.file =[]
         }
-      
-      
         
       
-      /*  this.arquivos.getAll()
-            .then((result: any) => {
-              this.file = result;
-              this.teste= JSON.stringify(result);
-            })
-            .catch((e) => console.error("Lista Vazia"+e));*/
+        
       console.log (JSON.stringify(this.teste));
       
   }
@@ -95,24 +86,11 @@ export class HomePage {
         }else{
         this.pp="play";
         this.arquivo.pause();
-       // this.pause=true;
         this.isAudioPlaying = false;
         }
 
         this.getAndSetCurrentAudioPosition();
       }
-
-     /* if (!this.pause){
-        this.startLoad("Carregando...");
-        this.arquivo.play(); 
-        this.endLoad();
-
-      }else{
-        
-      }*/
-    //this.controlProgressBar('');
-    //this.getAndSetCurrentAudioPosition();
-   // }
   }
 
 
@@ -121,7 +99,6 @@ export class HomePage {
       this.arquivo.stop();
       this.position = 0;
       console.log("parando arquivo"); 
-      //this.pause = false;  
       this.pp="play";
       this.isAudioPlaying = false;
       }
@@ -131,9 +108,8 @@ export class HomePage {
  limpaLista(){
       this.arquivos.clearPlaylist(this.id_lista_atual);
       this.para()
-      this.arquivo = null //this.media.create(this.navParam.data);
+      this.arquivo = null
       this.duration = -1
-      //this.listas.clearPlaylist(0);
       this.ionViewDidEnter();
       this.position = -0.001
 
@@ -146,9 +122,7 @@ export class HomePage {
     
     this.get_position_interval = setInterval(function(){ //essa func fica rodadn o tempo todo. Deal With It
       let last_position = self.position;
-    //  if (this.position > 0){
       if (self.arquivo != null){
- //     console.log(self.position)
         self.arquivo.getCurrentPosition()
       .then((position) => {
     //    console.log(position)
@@ -161,17 +135,13 @@ export class HomePage {
             self.position = position;
           }
         } else if (position >= self.duration) {
-          //self.para();
         }
         
       })
       .catch((e) => console.error("Arquivo Vazio"+e));
       }else{
         self.position = -0.001;
-      }
-      
-
-    //}
+      }      
     }, 100)
     
 }
@@ -188,30 +158,6 @@ private endLoad(){
       this.loader.dismiss();
     }
     
-    
-    
-/*
-controlProgressBar(event) {
-      //console.log("ControlprogressBar" +event.toString());
-      var self = this;
-      if(this.isAudioPlaying == true ) {
-          setInterval(function () {
-            console.log('loop')
-          self.arquivo.getCurrentPosition()
-            .then((position: any) => {
-              
-              if (position > 0 &&  !isNaN(position)) {
-                self.position = position;
-                console.log(position);
-              }
-            })
-            .catch((e) => console.error(e));
-            
-          }, 1000);
-        }
-
-      }		
-*/
 }
 
 

@@ -74,7 +74,6 @@ export class NavegaPage {
 
 toPlayer(arquivo){
     this.arquivos.insert(arquivo, this.navParam.get("id_lista"))
-    //this.navCtrl.setRoot(HomePage, caminho);
   }
 
 goDown (item){
@@ -95,13 +94,10 @@ goDown (item){
         reader.readEntries(children => {
           this.ngZone.run(() => {
             this.itensFiltrado = this.filtro(children);
-           // console.log(JSON.stringify(this.itensFiltrado));
-            //this.teste = JSON.stringify(this.itensCompleto);
         });
       }, this.handleError);
     }
     
- // console.log('depois'+JSON.stringify(this.itensFiltrado));
 });
     
   
@@ -134,8 +130,6 @@ filtro(pasta){
   let x=true;
   let filtrado;
   this.itensCompleto = pasta;
-  //console.log('antes'+JSON.stringify(pasta));
-  //if(completo.hasReadEntries)
   pasta.forEach(element => { //se é um diretorio
     if(element.isDirectory){
         if(x){
