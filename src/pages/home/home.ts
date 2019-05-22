@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,NavParams, IonicPageModule, IonicPage } from 'ionic-angular';
+import { NavController,NavParams, IonicPage } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { LoadingController } from 'ionic-angular';
 import { ListasProvider } from '../../providers/listas/listas'
